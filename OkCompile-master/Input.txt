@@ -1,0 +1,76 @@
+record #po11 {
+int #xx11, #yy11;
+}
+record #li11 {
+#po11 #xx11, #yy11;
+}
+int #at11 (int #ba12)
+{
+  //#xx12 #xx66;
+  char #ab12,#he99;
+ //#aL11.#xx11.#xx11 = 1;
+ 	#aL11.#xx11.#yy11 = 2;
+ 	#aL11.#yy11.#xx11 = 3;
+ 	#aL11.#yy11.#yy11 = 4;
+ 	#tw33[0].#xx11.#xx11 = 42;
+ 	#tw33[1].#yy11.#xx11 = 43;
+ 	#xx12 = #x12 + 2;
+ 	#xx12 += #xx12 + #xx12;
+ 	#rr55 = #xx13++;
+
+ // bool #ac14 : true;
+ // real #ba12 : 1.2;
+  //switch(#ab12)
+  //end
+  //if(#fo12 .ne 0){//The best loginc ever
+  //    #ab12 = 'c';
+  //    #vf15 = 10 % 6*7;
+  //}
+}
+
+
+while(false and #cc12)
+	  {
+	 		#bb11[0]++;
+	  }
+	  #bb11[0] = 6;
+	    switch(#aa11)
+          case 1: #aa11=1;;
+        end
+        int #bb11[12];
+        	bool #cc12 ;
+        	#bb11[0] += 0;
+        	#bb11[0]++;
+        	#bb11[2] = 3 +  10 +(false and false or true or(1+0))+18;
+        	#cc12=false and false ;
+            if(#cc12){//The best loginc ever
+                #cc12 = true;
+            }else{
+                #cc12 = false;
+            }
+
+            int #at11 ()
+            {
+                int #aa13,#aa11,#aa12;
+                #aa13=1;
+                switch(#aa11)
+                        case 1: #aa11=1;;
+                        case 2: #aa12=2;;
+                        default: #aa12=3;;
+                end
+            }
+            int #at11 ()
+            {
+                int #aa11,#aa12,#aa13;
+
+               while( #aa11){
+                #aa12++;
+                if(#aa12){
+                    #aa12++;
+                    break;
+                    #aa12++;
+                }
+                #aa12++;
+                }
+
+            }

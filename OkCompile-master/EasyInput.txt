@@ -1,0 +1,16 @@
+ record #pp22{
+    int #cc55;
+    int #bb55;
+ }
+ int #at11 ()
+{
+    #pp22 #aa13;
+    #aa13.#cc55++;
+    #xx12++;
+    return #aa13.#cc55;
+}
+
+int #qw12(){
+    int #pp12;
+    #pp12=#at11();
+}

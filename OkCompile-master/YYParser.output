@@ -1,0 +1,2674 @@
+Terminals unused in grammar
+
+   LETTER
+   DIGIT
+   NON_ZERO_DIGIT
+   HASH_KW
+   WHITE_SPACE
+   LETDIG
+   WITHOUT_N
+   COMMENT
+   PUNC_KW
+   NOT
+   "manyCase"
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: DeclarationList
+
+    2 DeclarationList: DeclarationList Declaration
+    3                | Declaration
+
+    4 Declaration: VarDeclaration
+    5            | FunDeclaration
+    6            | RecDeclaration
+
+    7 VarDeclaration: TypeSpecifier VarDeclList SEMI_COLUMN_KW
+
+    8 RecDeclaration: RECORD_KW Rectype LEFTAC LocalDeclarations RIGHTAC
+    9               | RECORD_KW Rectype LEFTAC RIGHTAC
+
+   10 ScopedVarDelaration: ScopedTypeSpecifer VarDeclList SEMI_COLUMN_KW
+
+   11 VarDeclList: VarDeclList COLUMN VarDeclInitialize
+   12            | VarDeclInitialize
+
+   13 VarDeclInitialize: VarDeclId
+   14                  | VarDeclId TWO_COLUMN SimpleExpression
+
+   15 VarDeclId: ID
+   16          | ID LEFTAR NUMCONST RIGHTAR
+
+   17 ScopedTypeSpecifer: STATIC_KW TypeSpecifier
+   18                   | TypeSpecifier
+
+   19 TypeSpecifier: TYPESPECIFIER_KW
+   20              | Rectype
+
+   21 Rectype: ID
+
+   22 FunDeclaration: TypeSpecifier ID LEFTPA Params rightPaQ Statement
+   23               | ID LEFTPA Params rightPaQ Statement
+
+   24 Params: ParamList
+   25       | /* empty */
+
+   26 ParamList: ParamList SEMI_COLUMN_KW ParamTypeList
+   27          | ParamTypeList
+
+   28 ParamTypeList: TypeSpecifier ParamIdList
+
+   29 ParamIdList: ParamIdList COLUMN ParamId
+   30            | ParamId
+
+   31 ParamId: ID
+   32        | ID LEFTAR RIGHTAR
+
+   33 Statement: ExpressionStmt
+   34          | CompoundStmt
+   35          | SelectionStmt
+   36          | ItereationStmt
+   37          | ReturnStmt
+   38          | BreakStmt
+
+   39 CompoundStmt: LEFTAC RIGHTAC
+   40             | LEFTAC Combo RIGHTAC
+
+   41 Combo: LocalDeclarations StatementList
+   42      | StatementList
+   43      | LocalDeclarations
+
+   44 LocalDeclarations: LocalDeclarations ScopedVarDelaration
+   45                  | ScopedVarDelaration
+
+   46 StatementList: StatementList Statement
+   47              | Statement
+
+   48 ExpressionStmt: Expression SEMI_COLUMN_KW
+   49               | SEMI_COLUMN_KW
+
+   50 SelectionStmt: IF_KW LEFTPA IfExpression rightPaQ Statement
+   51              | IF_KW LEFTPA IfExpression rightPaQ Statement ELSE_KW M Statement
+   52              | SWITCH_KW LEFTPA SimpleExpression rightPaQ CaseElement DefaultElement END_KW
+   53              | SWITCH_KW END_KW
+
+   54 IfExpression: SimpleExpression
+
+   55 CaseElement: CASE_KW M Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW
+   56            | CaseElement CASE_KW M Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+   57 DefaultElement: DEFAULT_KW TWO_COLUMN Statement SEMI_COLUMN_KW
+   58               | /* empty */
+
+   59 ItereationStmt: WHILE_KW LEFTPA M IfExpression rightPaQ Statement M
+
+   60 ReturnStmt: RETURN_KW SEMI_COLUMN_KW
+   61           | RETURN_KW Expression SEMI_COLUMN_KW
+
+   62 BreakStmt: BREAK_KW SEMI_COLUMN_KW
+
+   63 Expression: Mutable ASSIGN_KW Expression
+   64           | Mutable MATH_OP_ASSIGN_KW Expression
+   65           | Mutable UNARY_MATH_OP_KW
+   66           | SimpleExpression
+
+   67 SimpleExpression: RelExpression OR_KW M SimpleExpression
+   68                 | RelExpression AND_KW M SimpleExpression
+   69                 | RelExpression OrElseRel
+   70                 | RelExpression AndThenRel
+   71                 | NOT_KW SimpleExpression
+   72                 | RelExpression
+
+   73 OrElseRel: OR_KW ELSE_KW SimpleExpression
+
+   74 AndThenRel: AND_KW THEN_KW SimpleExpression
+
+   75 RelExpression: MathLogicExpression REL_OP_KW MathLogicExpression
+   76              | MathLogicExpression
+
+   77 ASSIGNED_MATH_OP: MATH_OP_KW
+
+   78 MathLogicExpression: MathLogicExpression ASSIGNED_MATH_OP UnaryExpression
+   79                    | UnaryExpression
+
+   80 UnaryExpression: UNARY_OP_KW UnaryExpression
+   81                | Factor
+
+   82 Factor: Mutable
+   83       | Immutable
+
+   84 Mutable: ID
+   85        | Mutable LEFTAR Expression RIGHTAR
+   86        | Mutable DOT_KW ID
+
+   87 Immutable: LEFTPA Expression rightPaQ
+   88          | Call
+   89          | Constant
+
+   90 Call: ID LEFTPA Args rightPaQ
+
+   91 Args: ArgList
+   92     | /* empty */
+
+   93 ArgList: ArgList COLUMN Expression
+   94        | Expression
+
+   95 Constant: NUMCONST
+   96         | REALCONST
+   97         | CHARCONST
+   98         | BOOL_KW
+
+   99 ID: ID_KW
+
+  100 rightPaQ: RIGHTPA
+
+  101 M: /* empty */
+
+  102 N: /* empty */
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+LETTER (258)
+DIGIT (259)
+NON_ZERO_DIGIT (260)
+HASH_KW (261)
+BOOL_KW (262) 98
+WHITE_SPACE (263)
+LETDIG (264)
+ID_KW (265) 99
+NUMCONST (266) 16 95
+WITHOUT_N (267)
+CHARCONST (268) 97
+COMMENT (269)
+REALCONST (270) 96
+OR_KW (271) 67 73
+AND_KW (272) 68 74
+ELSE_KW (273) 51 73
+THEN_KW (274) 74
+NOT_KW (275) 71
+IF_KW (276) 50 51
+END_KW (277) 52 53
+SWITCH_KW (278) 52 53
+WHILE_KW (279) 59
+CASE_KW (280) 55 56
+DEFAULT_KW (281) 57
+BREAK_KW (282) 62
+REL_OP_KW (283) 75
+MATH_OP_KW (284) 77
+UNARY_MATH_OP_KW (285) 65
+MATH_OP_ASSIGN_KW (286) 64
+UNARY_OP_KW (287) 80
+RETURN_KW (288) 60 61
+RECORD_KW (289) 8 9
+STATIC_KW (290) 17
+TYPESPECIFIER_KW (291) 19
+PUNC_KW (292)
+ASSIGN_KW (293) 63
+SEMI_COLUMN_KW (294) 7 10 26 48 49 55 56 57 60 61 62
+LEFTAC (295) 8 9 39 40
+RIGHTAC (296) 8 9 39 40
+LEFTAR (297) 16 32 85
+RIGHTAR (298) 16 32 85
+COLUMN (299) 11 29 93
+TWO_COLUMN (300) 14 55 56 57
+LEFTPA (301) 22 23 50 51 52 59 87 90
+RIGHTPA (302) 100
+DOT_KW (303) 86
+NOT (304)
+"simpleOr" (305)
+"simpleAnd" (306)
+"andThen" (307)
+"orElse" (308)
+"then" (309)
+"oneCase" (310)
+"manyCase" (311)
+
+
+Nonterminals, with rules where they appear
+
+$accept (57)
+    on left: 0
+Program (58)
+    on left: 1, on right: 0
+DeclarationList (59)
+    on left: 2 3, on right: 1 2
+Declaration (60)
+    on left: 4 5 6, on right: 2 3
+VarDeclaration (61)
+    on left: 7, on right: 4
+RecDeclaration (62)
+    on left: 8 9, on right: 6
+ScopedVarDelaration (63)
+    on left: 10, on right: 44 45
+VarDeclList (64)
+    on left: 11 12, on right: 7 10 11
+VarDeclInitialize (65)
+    on left: 13 14, on right: 11 12
+VarDeclId (66)
+    on left: 15 16, on right: 13 14
+ScopedTypeSpecifer (67)
+    on left: 17 18, on right: 10
+TypeSpecifier (68)
+    on left: 19 20, on right: 7 17 18 22 28
+Rectype (69)
+    on left: 21, on right: 8 9 20
+FunDeclaration (70)
+    on left: 22 23, on right: 5
+Params (71)
+    on left: 24 25, on right: 22 23
+ParamList (72)
+    on left: 26 27, on right: 24 26
+ParamTypeList (73)
+    on left: 28, on right: 26 27
+ParamIdList (74)
+    on left: 29 30, on right: 28 29
+ParamId (75)
+    on left: 31 32, on right: 29 30
+Statement (76)
+    on left: 33 34 35 36 37 38, on right: 22 23 46 47 50 51 55 56 57
+    59
+CompoundStmt (77)
+    on left: 39 40, on right: 34
+Combo (78)
+    on left: 41 42 43, on right: 40
+LocalDeclarations (79)
+    on left: 44 45, on right: 8 41 43 44
+StatementList (80)
+    on left: 46 47, on right: 41 42 46
+ExpressionStmt (81)
+    on left: 48 49, on right: 33
+SelectionStmt (82)
+    on left: 50 51 52 53, on right: 35
+IfExpression (83)
+    on left: 54, on right: 50 51 59
+CaseElement (84)
+    on left: 55 56, on right: 52 56
+DefaultElement (85)
+    on left: 57 58, on right: 52
+ItereationStmt (86)
+    on left: 59, on right: 36
+ReturnStmt (87)
+    on left: 60 61, on right: 37
+BreakStmt (88)
+    on left: 62, on right: 38
+Expression (89)
+    on left: 63 64 65 66, on right: 48 61 63 64 85 87 93 94
+SimpleExpression (90)
+    on left: 67 68 69 70 71 72, on right: 14 52 54 66 67 68 71 73 74
+OrElseRel (91)
+    on left: 73, on right: 69
+AndThenRel (92)
+    on left: 74, on right: 70
+RelExpression (93)
+    on left: 75 76, on right: 67 68 69 70 72
+ASSIGNED_MATH_OP (94)
+    on left: 77, on right: 78
+MathLogicExpression (95)
+    on left: 78 79, on right: 75 76 78
+UnaryExpression (96)
+    on left: 80 81, on right: 78 79 80
+Factor (97)
+    on left: 82 83, on right: 81
+Mutable (98)
+    on left: 84 85 86, on right: 63 64 65 82 85 86
+Immutable (99)
+    on left: 87 88 89, on right: 83
+Call (100)
+    on left: 90, on right: 88
+Args (101)
+    on left: 91 92, on right: 90
+ArgList (102)
+    on left: 93 94, on right: 91 93
+Constant (103)
+    on left: 95 96 97 98, on right: 55 56 89
+ID (104)
+    on left: 99, on right: 15 16 21 22 23 31 32 84 86 90
+rightPaQ (105)
+    on left: 100, on right: 22 23 50 51 52 59 87 90
+M (106)
+    on left: 101, on right: 51 55 56 59 67 68
+N (107)
+    on left: 102, on right: 55 56
+
+
+state 0
+
+    0 $accept: . Program $end
+
+    ID_KW             shift, and go to state 1
+    RECORD_KW         shift, and go to state 2
+    TYPESPECIFIER_KW  shift, and go to state 3
+
+    Program          go to state 4
+    DeclarationList  go to state 5
+    Declaration      go to state 6
+    VarDeclaration   go to state 7
+    RecDeclaration   go to state 8
+    TypeSpecifier    go to state 9
+    Rectype          go to state 10
+    FunDeclaration   go to state 11
+    ID               go to state 12
+
+
+state 1
+
+   99 ID: ID_KW .
+
+    $default  reduce using rule 99 (ID)
+
+
+state 2
+
+    8 RecDeclaration: RECORD_KW . Rectype LEFTAC LocalDeclarations RIGHTAC
+    9               | RECORD_KW . Rectype LEFTAC RIGHTAC
+
+    ID_KW  shift, and go to state 1
+
+    Rectype  go to state 13
+    ID       go to state 14
+
+
+state 3
+
+   19 TypeSpecifier: TYPESPECIFIER_KW .
+
+    $default  reduce using rule 19 (TypeSpecifier)
+
+
+state 4
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 15
+
+
+state 5
+
+    1 Program: DeclarationList .
+    2 DeclarationList: DeclarationList . Declaration
+
+    ID_KW             shift, and go to state 1
+    RECORD_KW         shift, and go to state 2
+    TYPESPECIFIER_KW  shift, and go to state 3
+
+    $default  reduce using rule 1 (Program)
+
+    Declaration     go to state 16
+    VarDeclaration  go to state 7
+    RecDeclaration  go to state 8
+    TypeSpecifier   go to state 9
+    Rectype         go to state 10
+    FunDeclaration  go to state 11
+    ID              go to state 12
+
+
+state 6
+
+    3 DeclarationList: Declaration .
+
+    $default  reduce using rule 3 (DeclarationList)
+
+
+state 7
+
+    4 Declaration: VarDeclaration .
+
+    $default  reduce using rule 4 (Declaration)
+
+
+state 8
+
+    6 Declaration: RecDeclaration .
+
+    $default  reduce using rule 6 (Declaration)
+
+
+state 9
+
+    7 VarDeclaration: TypeSpecifier . VarDeclList SEMI_COLUMN_KW
+   22 FunDeclaration: TypeSpecifier . ID LEFTPA Params rightPaQ Statement
+
+    ID_KW  shift, and go to state 1
+
+    VarDeclList        go to state 17
+    VarDeclInitialize  go to state 18
+    VarDeclId          go to state 19
+    ID                 go to state 20
+
+
+state 10
+
+   20 TypeSpecifier: Rectype .
+
+    $default  reduce using rule 20 (TypeSpecifier)
+
+
+state 11
+
+    5 Declaration: FunDeclaration .
+
+    $default  reduce using rule 5 (Declaration)
+
+
+state 12
+
+   21 Rectype: ID .
+   23 FunDeclaration: ID . LEFTPA Params rightPaQ Statement
+
+    LEFTPA  shift, and go to state 21
+
+    $default  reduce using rule 21 (Rectype)
+
+
+state 13
+
+    8 RecDeclaration: RECORD_KW Rectype . LEFTAC LocalDeclarations RIGHTAC
+    9               | RECORD_KW Rectype . LEFTAC RIGHTAC
+
+    LEFTAC  shift, and go to state 22
+
+
+state 14
+
+   21 Rectype: ID .
+
+    $default  reduce using rule 21 (Rectype)
+
+
+state 15
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+state 16
+
+    2 DeclarationList: DeclarationList Declaration .
+
+    $default  reduce using rule 2 (DeclarationList)
+
+
+state 17
+
+    7 VarDeclaration: TypeSpecifier VarDeclList . SEMI_COLUMN_KW
+   11 VarDeclList: VarDeclList . COLUMN VarDeclInitialize
+
+    SEMI_COLUMN_KW  shift, and go to state 23
+    COLUMN          shift, and go to state 24
+
+
+state 18
+
+   12 VarDeclList: VarDeclInitialize .
+
+    $default  reduce using rule 12 (VarDeclList)
+
+
+state 19
+
+   13 VarDeclInitialize: VarDeclId .
+   14                  | VarDeclId . TWO_COLUMN SimpleExpression
+
+    TWO_COLUMN  shift, and go to state 25
+
+    $default  reduce using rule 13 (VarDeclInitialize)
+
+
+state 20
+
+   15 VarDeclId: ID .
+   16          | ID . LEFTAR NUMCONST RIGHTAR
+   22 FunDeclaration: TypeSpecifier ID . LEFTPA Params rightPaQ Statement
+
+    LEFTAR  shift, and go to state 26
+    LEFTPA  shift, and go to state 27
+
+    $default  reduce using rule 15 (VarDeclId)
+
+
+state 21
+
+   23 FunDeclaration: ID LEFTPA . Params rightPaQ Statement
+
+    ID_KW             shift, and go to state 1
+    TYPESPECIFIER_KW  shift, and go to state 3
+
+    $default  reduce using rule 25 (Params)
+
+    TypeSpecifier  go to state 28
+    Rectype        go to state 10
+    Params         go to state 29
+    ParamList      go to state 30
+    ParamTypeList  go to state 31
+    ID             go to state 14
+
+
+state 22
+
+    8 RecDeclaration: RECORD_KW Rectype LEFTAC . LocalDeclarations RIGHTAC
+    9               | RECORD_KW Rectype LEFTAC . RIGHTAC
+
+    ID_KW             shift, and go to state 1
+    STATIC_KW         shift, and go to state 32
+    TYPESPECIFIER_KW  shift, and go to state 3
+    RIGHTAC           shift, and go to state 33
+
+    ScopedVarDelaration  go to state 34
+    ScopedTypeSpecifer   go to state 35
+    TypeSpecifier        go to state 36
+    Rectype              go to state 10
+    LocalDeclarations    go to state 37
+    ID                   go to state 14
+
+
+state 23
+
+    7 VarDeclaration: TypeSpecifier VarDeclList SEMI_COLUMN_KW .
+
+    $default  reduce using rule 7 (VarDeclaration)
+
+
+state 24
+
+   11 VarDeclList: VarDeclList COLUMN . VarDeclInitialize
+
+    ID_KW  shift, and go to state 1
+
+    VarDeclInitialize  go to state 38
+    VarDeclId          go to state 19
+    ID                 go to state 39
+
+
+state 25
+
+   14 VarDeclInitialize: VarDeclId TWO_COLUMN . SimpleExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    SimpleExpression     go to state 47
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 26
+
+   16 VarDeclId: ID LEFTAR . NUMCONST RIGHTAR
+
+    NUMCONST  shift, and go to state 57
+
+
+state 27
+
+   22 FunDeclaration: TypeSpecifier ID LEFTPA . Params rightPaQ Statement
+
+    ID_KW             shift, and go to state 1
+    TYPESPECIFIER_KW  shift, and go to state 3
+
+    $default  reduce using rule 25 (Params)
+
+    TypeSpecifier  go to state 28
+    Rectype        go to state 10
+    Params         go to state 58
+    ParamList      go to state 30
+    ParamTypeList  go to state 31
+    ID             go to state 14
+
+
+state 28
+
+   28 ParamTypeList: TypeSpecifier . ParamIdList
+
+    ID_KW  shift, and go to state 1
+
+    ParamIdList  go to state 59
+    ParamId      go to state 60
+    ID           go to state 61
+
+
+state 29
+
+   23 FunDeclaration: ID LEFTPA Params . rightPaQ Statement
+
+    RIGHTPA  shift, and go to state 62
+
+    rightPaQ  go to state 63
+
+
+state 30
+
+   24 Params: ParamList .
+   26 ParamList: ParamList . SEMI_COLUMN_KW ParamTypeList
+
+    SEMI_COLUMN_KW  shift, and go to state 64
+
+    $default  reduce using rule 24 (Params)
+
+
+state 31
+
+   27 ParamList: ParamTypeList .
+
+    $default  reduce using rule 27 (ParamList)
+
+
+state 32
+
+   17 ScopedTypeSpecifer: STATIC_KW . TypeSpecifier
+
+    ID_KW             shift, and go to state 1
+    TYPESPECIFIER_KW  shift, and go to state 3
+
+    TypeSpecifier  go to state 65
+    Rectype        go to state 10
+    ID             go to state 14
+
+
+state 33
+
+    9 RecDeclaration: RECORD_KW Rectype LEFTAC RIGHTAC .
+
+    $default  reduce using rule 9 (RecDeclaration)
+
+
+state 34
+
+   45 LocalDeclarations: ScopedVarDelaration .
+
+    $default  reduce using rule 45 (LocalDeclarations)
+
+
+state 35
+
+   10 ScopedVarDelaration: ScopedTypeSpecifer . VarDeclList SEMI_COLUMN_KW
+
+    ID_KW  shift, and go to state 1
+
+    VarDeclList        go to state 66
+    VarDeclInitialize  go to state 18
+    VarDeclId          go to state 19
+    ID                 go to state 39
+
+
+state 36
+
+   18 ScopedTypeSpecifer: TypeSpecifier .
+
+    $default  reduce using rule 18 (ScopedTypeSpecifer)
+
+
+state 37
+
+    8 RecDeclaration: RECORD_KW Rectype LEFTAC LocalDeclarations . RIGHTAC
+   44 LocalDeclarations: LocalDeclarations . ScopedVarDelaration
+
+    ID_KW             shift, and go to state 1
+    STATIC_KW         shift, and go to state 32
+    TYPESPECIFIER_KW  shift, and go to state 3
+    RIGHTAC           shift, and go to state 67
+
+    ScopedVarDelaration  go to state 68
+    ScopedTypeSpecifer   go to state 35
+    TypeSpecifier        go to state 36
+    Rectype              go to state 10
+    ID                   go to state 14
+
+
+state 38
+
+   11 VarDeclList: VarDeclList COLUMN VarDeclInitialize .
+
+    $default  reduce using rule 11 (VarDeclList)
+
+
+state 39
+
+   15 VarDeclId: ID .
+   16          | ID . LEFTAR NUMCONST RIGHTAR
+
+    LEFTAR  shift, and go to state 26
+
+    $default  reduce using rule 15 (VarDeclId)
+
+
+state 40
+
+   98 Constant: BOOL_KW .
+
+    $default  reduce using rule 98 (Constant)
+
+
+state 41
+
+   95 Constant: NUMCONST .
+
+    $default  reduce using rule 95 (Constant)
+
+
+state 42
+
+   97 Constant: CHARCONST .
+
+    $default  reduce using rule 97 (Constant)
+
+
+state 43
+
+   96 Constant: REALCONST .
+
+    $default  reduce using rule 96 (Constant)
+
+
+state 44
+
+   71 SimpleExpression: NOT_KW . SimpleExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    SimpleExpression     go to state 69
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 45
+
+   80 UnaryExpression: UNARY_OP_KW . UnaryExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    UnaryExpression  go to state 70
+    Factor           go to state 51
+    Mutable          go to state 52
+    Immutable        go to state 53
+    Call             go to state 54
+    Constant         go to state 55
+    ID               go to state 56
+
+
+state 46
+
+   87 Immutable: LEFTPA . Expression rightPaQ
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    Expression           go to state 71
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 47
+
+   14 VarDeclInitialize: VarDeclId TWO_COLUMN SimpleExpression .
+
+    $default  reduce using rule 14 (VarDeclInitialize)
+
+
+state 48
+
+   67 SimpleExpression: RelExpression . OR_KW M SimpleExpression
+   68                 | RelExpression . AND_KW M SimpleExpression
+   69                 | RelExpression . OrElseRel
+   70                 | RelExpression . AndThenRel
+   72                 | RelExpression .
+
+    OR_KW   shift, and go to state 74
+    AND_KW  shift, and go to state 75
+
+    $default  reduce using rule 72 (SimpleExpression)
+
+    OrElseRel   go to state 76
+    AndThenRel  go to state 77
+
+
+state 49
+
+   75 RelExpression: MathLogicExpression . REL_OP_KW MathLogicExpression
+   76              | MathLogicExpression .
+   78 MathLogicExpression: MathLogicExpression . ASSIGNED_MATH_OP UnaryExpression
+
+    REL_OP_KW   shift, and go to state 78
+    MATH_OP_KW  shift, and go to state 79
+
+    $default  reduce using rule 76 (RelExpression)
+
+    ASSIGNED_MATH_OP  go to state 80
+
+
+state 50
+
+   79 MathLogicExpression: UnaryExpression .
+
+    $default  reduce using rule 79 (MathLogicExpression)
+
+
+state 51
+
+   81 UnaryExpression: Factor .
+
+    $default  reduce using rule 81 (UnaryExpression)
+
+
+state 52
+
+   82 Factor: Mutable .
+   85 Mutable: Mutable . LEFTAR Expression RIGHTAR
+   86        | Mutable . DOT_KW ID
+
+    LEFTAR  shift, and go to state 81
+    DOT_KW  shift, and go to state 82
+
+    $default  reduce using rule 82 (Factor)
+
+
+state 53
+
+   83 Factor: Immutable .
+
+    $default  reduce using rule 83 (Factor)
+
+
+state 54
+
+   88 Immutable: Call .
+
+    $default  reduce using rule 88 (Immutable)
+
+
+state 55
+
+   89 Immutable: Constant .
+
+    $default  reduce using rule 89 (Immutable)
+
+
+state 56
+
+   84 Mutable: ID .
+   90 Call: ID . LEFTPA Args rightPaQ
+
+    LEFTPA  shift, and go to state 83
+
+    $default  reduce using rule 84 (Mutable)
+
+
+state 57
+
+   16 VarDeclId: ID LEFTAR NUMCONST . RIGHTAR
+
+    RIGHTAR  shift, and go to state 84
+
+
+state 58
+
+   22 FunDeclaration: TypeSpecifier ID LEFTPA Params . rightPaQ Statement
+
+    RIGHTPA  shift, and go to state 62
+
+    rightPaQ  go to state 85
+
+
+state 59
+
+   28 ParamTypeList: TypeSpecifier ParamIdList .
+   29 ParamIdList: ParamIdList . COLUMN ParamId
+
+    COLUMN  shift, and go to state 86
+
+    $default  reduce using rule 28 (ParamTypeList)
+
+
+state 60
+
+   30 ParamIdList: ParamId .
+
+    $default  reduce using rule 30 (ParamIdList)
+
+
+state 61
+
+   31 ParamId: ID .
+   32        | ID . LEFTAR RIGHTAR
+
+    LEFTAR  shift, and go to state 87
+
+    $default  reduce using rule 31 (ParamId)
+
+
+state 62
+
+  100 rightPaQ: RIGHTPA .
+
+    $default  reduce using rule 100 (rightPaQ)
+
+
+state 63
+
+   23 FunDeclaration: ID LEFTPA Params rightPaQ . Statement
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    Statement            go to state 95
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 64
+
+   26 ParamList: ParamList SEMI_COLUMN_KW . ParamTypeList
+
+    ID_KW             shift, and go to state 1
+    TYPESPECIFIER_KW  shift, and go to state 3
+
+    TypeSpecifier  go to state 28
+    Rectype        go to state 10
+    ParamTypeList  go to state 103
+    ID             go to state 14
+
+
+state 65
+
+   17 ScopedTypeSpecifer: STATIC_KW TypeSpecifier .
+
+    $default  reduce using rule 17 (ScopedTypeSpecifer)
+
+
+state 66
+
+   10 ScopedVarDelaration: ScopedTypeSpecifer VarDeclList . SEMI_COLUMN_KW
+   11 VarDeclList: VarDeclList . COLUMN VarDeclInitialize
+
+    SEMI_COLUMN_KW  shift, and go to state 104
+    COLUMN          shift, and go to state 24
+
+
+state 67
+
+    8 RecDeclaration: RECORD_KW Rectype LEFTAC LocalDeclarations RIGHTAC .
+
+    $default  reduce using rule 8 (RecDeclaration)
+
+
+state 68
+
+   44 LocalDeclarations: LocalDeclarations ScopedVarDelaration .
+
+    $default  reduce using rule 44 (LocalDeclarations)
+
+
+state 69
+
+   71 SimpleExpression: NOT_KW SimpleExpression .
+
+    $default  reduce using rule 71 (SimpleExpression)
+
+
+state 70
+
+   80 UnaryExpression: UNARY_OP_KW UnaryExpression .
+
+    $default  reduce using rule 80 (UnaryExpression)
+
+
+state 71
+
+   87 Immutable: LEFTPA Expression . rightPaQ
+
+    RIGHTPA  shift, and go to state 62
+
+    rightPaQ  go to state 105
+
+
+state 72
+
+   66 Expression: SimpleExpression .
+
+    $default  reduce using rule 66 (Expression)
+
+
+state 73
+
+   63 Expression: Mutable . ASSIGN_KW Expression
+   64           | Mutable . MATH_OP_ASSIGN_KW Expression
+   65           | Mutable . UNARY_MATH_OP_KW
+   82 Factor: Mutable .
+   85 Mutable: Mutable . LEFTAR Expression RIGHTAR
+   86        | Mutable . DOT_KW ID
+
+    UNARY_MATH_OP_KW   shift, and go to state 106
+    MATH_OP_ASSIGN_KW  shift, and go to state 107
+    ASSIGN_KW          shift, and go to state 108
+    LEFTAR             shift, and go to state 81
+    DOT_KW             shift, and go to state 82
+
+    $default  reduce using rule 82 (Factor)
+
+
+state 74
+
+   67 SimpleExpression: RelExpression OR_KW . M SimpleExpression
+   73 OrElseRel: OR_KW . ELSE_KW SimpleExpression
+
+    ELSE_KW  shift, and go to state 109
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 110
+
+
+state 75
+
+   68 SimpleExpression: RelExpression AND_KW . M SimpleExpression
+   74 AndThenRel: AND_KW . THEN_KW SimpleExpression
+
+    THEN_KW  shift, and go to state 111
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 112
+
+
+state 76
+
+   69 SimpleExpression: RelExpression OrElseRel .
+
+    $default  reduce using rule 69 (SimpleExpression)
+
+
+state 77
+
+   70 SimpleExpression: RelExpression AndThenRel .
+
+    $default  reduce using rule 70 (SimpleExpression)
+
+
+state 78
+
+   75 RelExpression: MathLogicExpression REL_OP_KW . MathLogicExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    MathLogicExpression  go to state 113
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 79
+
+   77 ASSIGNED_MATH_OP: MATH_OP_KW .
+
+    $default  reduce using rule 77 (ASSIGNED_MATH_OP)
+
+
+state 80
+
+   78 MathLogicExpression: MathLogicExpression ASSIGNED_MATH_OP . UnaryExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    UnaryExpression  go to state 114
+    Factor           go to state 51
+    Mutable          go to state 52
+    Immutable        go to state 53
+    Call             go to state 54
+    Constant         go to state 55
+    ID               go to state 56
+
+
+state 81
+
+   85 Mutable: Mutable LEFTAR . Expression RIGHTAR
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    Expression           go to state 115
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 82
+
+   86 Mutable: Mutable DOT_KW . ID
+
+    ID_KW  shift, and go to state 1
+
+    ID  go to state 116
+
+
+state 83
+
+   90 Call: ID LEFTPA . Args rightPaQ
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    $default  reduce using rule 92 (Args)
+
+    Expression           go to state 117
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Args                 go to state 118
+    ArgList              go to state 119
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 84
+
+   16 VarDeclId: ID LEFTAR NUMCONST RIGHTAR .
+
+    $default  reduce using rule 16 (VarDeclId)
+
+
+state 85
+
+   22 FunDeclaration: TypeSpecifier ID LEFTPA Params rightPaQ . Statement
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    Statement            go to state 120
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 86
+
+   29 ParamIdList: ParamIdList COLUMN . ParamId
+
+    ID_KW  shift, and go to state 1
+
+    ParamId  go to state 121
+    ID       go to state 61
+
+
+state 87
+
+   32 ParamId: ID LEFTAR . RIGHTAR
+
+    RIGHTAR  shift, and go to state 122
+
+
+state 88
+
+   50 SelectionStmt: IF_KW . LEFTPA IfExpression rightPaQ Statement
+   51              | IF_KW . LEFTPA IfExpression rightPaQ Statement ELSE_KW M Statement
+
+    LEFTPA  shift, and go to state 123
+
+
+state 89
+
+   52 SelectionStmt: SWITCH_KW . LEFTPA SimpleExpression rightPaQ CaseElement DefaultElement END_KW
+   53              | SWITCH_KW . END_KW
+
+    END_KW  shift, and go to state 124
+    LEFTPA  shift, and go to state 125
+
+
+state 90
+
+   59 ItereationStmt: WHILE_KW . LEFTPA M IfExpression rightPaQ Statement M
+
+    LEFTPA  shift, and go to state 126
+
+
+state 91
+
+   62 BreakStmt: BREAK_KW . SEMI_COLUMN_KW
+
+    SEMI_COLUMN_KW  shift, and go to state 127
+
+
+state 92
+
+   60 ReturnStmt: RETURN_KW . SEMI_COLUMN_KW
+   61           | RETURN_KW . Expression SEMI_COLUMN_KW
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    UNARY_OP_KW     shift, and go to state 45
+    SEMI_COLUMN_KW  shift, and go to state 128
+    LEFTPA          shift, and go to state 46
+
+    Expression           go to state 129
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 93
+
+   49 ExpressionStmt: SEMI_COLUMN_KW .
+
+    $default  reduce using rule 49 (ExpressionStmt)
+
+
+state 94
+
+   39 CompoundStmt: LEFTAC . RIGHTAC
+   40             | LEFTAC . Combo RIGHTAC
+
+    BOOL_KW           shift, and go to state 40
+    ID_KW             shift, and go to state 1
+    NUMCONST          shift, and go to state 41
+    CHARCONST         shift, and go to state 42
+    REALCONST         shift, and go to state 43
+    NOT_KW            shift, and go to state 44
+    IF_KW             shift, and go to state 88
+    SWITCH_KW         shift, and go to state 89
+    WHILE_KW          shift, and go to state 90
+    BREAK_KW          shift, and go to state 91
+    UNARY_OP_KW       shift, and go to state 45
+    RETURN_KW         shift, and go to state 92
+    STATIC_KW         shift, and go to state 32
+    TYPESPECIFIER_KW  shift, and go to state 3
+    SEMI_COLUMN_KW    shift, and go to state 93
+    LEFTAC            shift, and go to state 94
+    RIGHTAC           shift, and go to state 130
+    LEFTPA            shift, and go to state 46
+
+    ScopedVarDelaration  go to state 34
+    ScopedTypeSpecifer   go to state 35
+    TypeSpecifier        go to state 36
+    Rectype              go to state 10
+    Statement            go to state 131
+    CompoundStmt         go to state 96
+    Combo                go to state 132
+    LocalDeclarations    go to state 133
+    StatementList        go to state 134
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 135
+
+
+state 95
+
+   23 FunDeclaration: ID LEFTPA Params rightPaQ Statement .
+
+    $default  reduce using rule 23 (FunDeclaration)
+
+
+state 96
+
+   34 Statement: CompoundStmt .
+
+    $default  reduce using rule 34 (Statement)
+
+
+state 97
+
+   33 Statement: ExpressionStmt .
+
+    $default  reduce using rule 33 (Statement)
+
+
+state 98
+
+   35 Statement: SelectionStmt .
+
+    $default  reduce using rule 35 (Statement)
+
+
+state 99
+
+   36 Statement: ItereationStmt .
+
+    $default  reduce using rule 36 (Statement)
+
+
+state 100
+
+   37 Statement: ReturnStmt .
+
+    $default  reduce using rule 37 (Statement)
+
+
+state 101
+
+   38 Statement: BreakStmt .
+
+    $default  reduce using rule 38 (Statement)
+
+
+state 102
+
+   48 ExpressionStmt: Expression . SEMI_COLUMN_KW
+
+    SEMI_COLUMN_KW  shift, and go to state 136
+
+
+state 103
+
+   26 ParamList: ParamList SEMI_COLUMN_KW ParamTypeList .
+
+    $default  reduce using rule 26 (ParamList)
+
+
+state 104
+
+   10 ScopedVarDelaration: ScopedTypeSpecifer VarDeclList SEMI_COLUMN_KW .
+
+    $default  reduce using rule 10 (ScopedVarDelaration)
+
+
+state 105
+
+   87 Immutable: LEFTPA Expression rightPaQ .
+
+    $default  reduce using rule 87 (Immutable)
+
+
+state 106
+
+   65 Expression: Mutable UNARY_MATH_OP_KW .
+
+    $default  reduce using rule 65 (Expression)
+
+
+state 107
+
+   64 Expression: Mutable MATH_OP_ASSIGN_KW . Expression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    Expression           go to state 137
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 108
+
+   63 Expression: Mutable ASSIGN_KW . Expression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    Expression           go to state 138
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 109
+
+   73 OrElseRel: OR_KW ELSE_KW . SimpleExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    SimpleExpression     go to state 139
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 110
+
+   67 SimpleExpression: RelExpression OR_KW M . SimpleExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    SimpleExpression     go to state 140
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 111
+
+   74 AndThenRel: AND_KW THEN_KW . SimpleExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    SimpleExpression     go to state 141
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 112
+
+   68 SimpleExpression: RelExpression AND_KW M . SimpleExpression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    SimpleExpression     go to state 142
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 113
+
+   75 RelExpression: MathLogicExpression REL_OP_KW MathLogicExpression .
+   78 MathLogicExpression: MathLogicExpression . ASSIGNED_MATH_OP UnaryExpression
+
+    MATH_OP_KW  shift, and go to state 79
+
+    $default  reduce using rule 75 (RelExpression)
+
+    ASSIGNED_MATH_OP  go to state 80
+
+
+state 114
+
+   78 MathLogicExpression: MathLogicExpression ASSIGNED_MATH_OP UnaryExpression .
+
+    $default  reduce using rule 78 (MathLogicExpression)
+
+
+state 115
+
+   85 Mutable: Mutable LEFTAR Expression . RIGHTAR
+
+    RIGHTAR  shift, and go to state 143
+
+
+state 116
+
+   86 Mutable: Mutable DOT_KW ID .
+
+    $default  reduce using rule 86 (Mutable)
+
+
+state 117
+
+   94 ArgList: Expression .
+
+    $default  reduce using rule 94 (ArgList)
+
+
+state 118
+
+   90 Call: ID LEFTPA Args . rightPaQ
+
+    RIGHTPA  shift, and go to state 62
+
+    rightPaQ  go to state 144
+
+
+state 119
+
+   91 Args: ArgList .
+   93 ArgList: ArgList . COLUMN Expression
+
+    COLUMN  shift, and go to state 145
+
+    $default  reduce using rule 91 (Args)
+
+
+state 120
+
+   22 FunDeclaration: TypeSpecifier ID LEFTPA Params rightPaQ Statement .
+
+    $default  reduce using rule 22 (FunDeclaration)
+
+
+state 121
+
+   29 ParamIdList: ParamIdList COLUMN ParamId .
+
+    $default  reduce using rule 29 (ParamIdList)
+
+
+state 122
+
+   32 ParamId: ID LEFTAR RIGHTAR .
+
+    $default  reduce using rule 32 (ParamId)
+
+
+state 123
+
+   50 SelectionStmt: IF_KW LEFTPA . IfExpression rightPaQ Statement
+   51              | IF_KW LEFTPA . IfExpression rightPaQ Statement ELSE_KW M Statement
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    IfExpression         go to state 146
+    SimpleExpression     go to state 147
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 124
+
+   53 SelectionStmt: SWITCH_KW END_KW .
+
+    $default  reduce using rule 53 (SelectionStmt)
+
+
+state 125
+
+   52 SelectionStmt: SWITCH_KW LEFTPA . SimpleExpression rightPaQ CaseElement DefaultElement END_KW
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    SimpleExpression     go to state 148
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 126
+
+   59 ItereationStmt: WHILE_KW LEFTPA . M IfExpression rightPaQ Statement M
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 149
+
+
+state 127
+
+   62 BreakStmt: BREAK_KW SEMI_COLUMN_KW .
+
+    $default  reduce using rule 62 (BreakStmt)
+
+
+state 128
+
+   60 ReturnStmt: RETURN_KW SEMI_COLUMN_KW .
+
+    $default  reduce using rule 60 (ReturnStmt)
+
+
+state 129
+
+   61 ReturnStmt: RETURN_KW Expression . SEMI_COLUMN_KW
+
+    SEMI_COLUMN_KW  shift, and go to state 150
+
+
+state 130
+
+   39 CompoundStmt: LEFTAC RIGHTAC .
+
+    $default  reduce using rule 39 (CompoundStmt)
+
+
+state 131
+
+   47 StatementList: Statement .
+
+    $default  reduce using rule 47 (StatementList)
+
+
+state 132
+
+   40 CompoundStmt: LEFTAC Combo . RIGHTAC
+
+    RIGHTAC  shift, and go to state 151
+
+
+state 133
+
+   41 Combo: LocalDeclarations . StatementList
+   43      | LocalDeclarations .
+   44 LocalDeclarations: LocalDeclarations . ScopedVarDelaration
+
+    BOOL_KW           shift, and go to state 40
+    ID_KW             shift, and go to state 1
+    NUMCONST          shift, and go to state 41
+    CHARCONST         shift, and go to state 42
+    REALCONST         shift, and go to state 43
+    NOT_KW            shift, and go to state 44
+    IF_KW             shift, and go to state 88
+    SWITCH_KW         shift, and go to state 89
+    WHILE_KW          shift, and go to state 90
+    BREAK_KW          shift, and go to state 91
+    UNARY_OP_KW       shift, and go to state 45
+    RETURN_KW         shift, and go to state 92
+    STATIC_KW         shift, and go to state 32
+    TYPESPECIFIER_KW  shift, and go to state 3
+    SEMI_COLUMN_KW    shift, and go to state 93
+    LEFTAC            shift, and go to state 94
+    LEFTPA            shift, and go to state 46
+
+    $default  reduce using rule 43 (Combo)
+
+    ScopedVarDelaration  go to state 68
+    ScopedTypeSpecifer   go to state 35
+    TypeSpecifier        go to state 36
+    Rectype              go to state 10
+    Statement            go to state 131
+    CompoundStmt         go to state 96
+    StatementList        go to state 152
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 135
+
+
+state 134
+
+   42 Combo: StatementList .
+   46 StatementList: StatementList . Statement
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    $default  reduce using rule 42 (Combo)
+
+    Statement            go to state 153
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 135
+
+   21 Rectype: ID .
+   84 Mutable: ID .
+   90 Call: ID . LEFTPA Args rightPaQ
+
+    LEFTPA  shift, and go to state 83
+
+    ID_KW     reduce using rule 21 (Rectype)
+    $default  reduce using rule 84 (Mutable)
+
+
+state 136
+
+   48 ExpressionStmt: Expression SEMI_COLUMN_KW .
+
+    $default  reduce using rule 48 (ExpressionStmt)
+
+
+state 137
+
+   64 Expression: Mutable MATH_OP_ASSIGN_KW Expression .
+
+    $default  reduce using rule 64 (Expression)
+
+
+state 138
+
+   63 Expression: Mutable ASSIGN_KW Expression .
+
+    $default  reduce using rule 63 (Expression)
+
+
+state 139
+
+   73 OrElseRel: OR_KW ELSE_KW SimpleExpression .
+
+    $default  reduce using rule 73 (OrElseRel)
+
+
+state 140
+
+   67 SimpleExpression: RelExpression OR_KW M SimpleExpression .
+
+    $default  reduce using rule 67 (SimpleExpression)
+
+
+state 141
+
+   74 AndThenRel: AND_KW THEN_KW SimpleExpression .
+
+    $default  reduce using rule 74 (AndThenRel)
+
+
+state 142
+
+   68 SimpleExpression: RelExpression AND_KW M SimpleExpression .
+
+    $default  reduce using rule 68 (SimpleExpression)
+
+
+state 143
+
+   85 Mutable: Mutable LEFTAR Expression RIGHTAR .
+
+    $default  reduce using rule 85 (Mutable)
+
+
+state 144
+
+   90 Call: ID LEFTPA Args rightPaQ .
+
+    $default  reduce using rule 90 (Call)
+
+
+state 145
+
+   93 ArgList: ArgList COLUMN . Expression
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    Expression           go to state 154
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 146
+
+   50 SelectionStmt: IF_KW LEFTPA IfExpression . rightPaQ Statement
+   51              | IF_KW LEFTPA IfExpression . rightPaQ Statement ELSE_KW M Statement
+
+    RIGHTPA  shift, and go to state 62
+
+    rightPaQ  go to state 155
+
+
+state 147
+
+   54 IfExpression: SimpleExpression .
+
+    $default  reduce using rule 54 (IfExpression)
+
+
+state 148
+
+   52 SelectionStmt: SWITCH_KW LEFTPA SimpleExpression . rightPaQ CaseElement DefaultElement END_KW
+
+    RIGHTPA  shift, and go to state 62
+
+    rightPaQ  go to state 156
+
+
+state 149
+
+   59 ItereationStmt: WHILE_KW LEFTPA M . IfExpression rightPaQ Statement M
+
+    BOOL_KW      shift, and go to state 40
+    ID_KW        shift, and go to state 1
+    NUMCONST     shift, and go to state 41
+    CHARCONST    shift, and go to state 42
+    REALCONST    shift, and go to state 43
+    NOT_KW       shift, and go to state 44
+    UNARY_OP_KW  shift, and go to state 45
+    LEFTPA       shift, and go to state 46
+
+    IfExpression         go to state 157
+    SimpleExpression     go to state 147
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 52
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 150
+
+   61 ReturnStmt: RETURN_KW Expression SEMI_COLUMN_KW .
+
+    $default  reduce using rule 61 (ReturnStmt)
+
+
+state 151
+
+   40 CompoundStmt: LEFTAC Combo RIGHTAC .
+
+    $default  reduce using rule 40 (CompoundStmt)
+
+
+state 152
+
+   41 Combo: LocalDeclarations StatementList .
+   46 StatementList: StatementList . Statement
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    $default  reduce using rule 41 (Combo)
+
+    Statement            go to state 153
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 153
+
+   46 StatementList: StatementList Statement .
+
+    $default  reduce using rule 46 (StatementList)
+
+
+state 154
+
+   93 ArgList: ArgList COLUMN Expression .
+
+    $default  reduce using rule 93 (ArgList)
+
+
+state 155
+
+   50 SelectionStmt: IF_KW LEFTPA IfExpression rightPaQ . Statement
+   51              | IF_KW LEFTPA IfExpression rightPaQ . Statement ELSE_KW M Statement
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    Statement            go to state 158
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 156
+
+   52 SelectionStmt: SWITCH_KW LEFTPA SimpleExpression rightPaQ . CaseElement DefaultElement END_KW
+
+    CASE_KW  shift, and go to state 159
+
+    CaseElement  go to state 160
+
+
+state 157
+
+   59 ItereationStmt: WHILE_KW LEFTPA M IfExpression . rightPaQ Statement M
+
+    RIGHTPA  shift, and go to state 62
+
+    rightPaQ  go to state 161
+
+
+state 158
+
+   50 SelectionStmt: IF_KW LEFTPA IfExpression rightPaQ Statement .
+   51              | IF_KW LEFTPA IfExpression rightPaQ Statement . ELSE_KW M Statement
+
+    ELSE_KW  shift, and go to state 162
+
+    $default  reduce using rule 50 (SelectionStmt)
+
+
+state 159
+
+   55 CaseElement: CASE_KW . M Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 163
+
+
+state 160
+
+   52 SelectionStmt: SWITCH_KW LEFTPA SimpleExpression rightPaQ CaseElement . DefaultElement END_KW
+   56 CaseElement: CaseElement . CASE_KW M Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    CASE_KW     shift, and go to state 164
+    DEFAULT_KW  shift, and go to state 165
+
+    $default  reduce using rule 58 (DefaultElement)
+
+    DefaultElement  go to state 166
+
+
+state 161
+
+   59 ItereationStmt: WHILE_KW LEFTPA M IfExpression rightPaQ . Statement M
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    Statement            go to state 167
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 162
+
+   51 SelectionStmt: IF_KW LEFTPA IfExpression rightPaQ Statement ELSE_KW . M Statement
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 168
+
+
+state 163
+
+   55 CaseElement: CASE_KW M . Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    BOOL_KW    shift, and go to state 40
+    NUMCONST   shift, and go to state 41
+    CHARCONST  shift, and go to state 42
+    REALCONST  shift, and go to state 43
+
+    Constant  go to state 169
+
+
+state 164
+
+   56 CaseElement: CaseElement CASE_KW . M Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 170
+
+
+state 165
+
+   57 DefaultElement: DEFAULT_KW . TWO_COLUMN Statement SEMI_COLUMN_KW
+
+    TWO_COLUMN  shift, and go to state 171
+
+
+state 166
+
+   52 SelectionStmt: SWITCH_KW LEFTPA SimpleExpression rightPaQ CaseElement DefaultElement . END_KW
+
+    END_KW  shift, and go to state 172
+
+
+state 167
+
+   59 ItereationStmt: WHILE_KW LEFTPA M IfExpression rightPaQ Statement . M
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 173
+
+
+state 168
+
+   51 SelectionStmt: IF_KW LEFTPA IfExpression rightPaQ Statement ELSE_KW M . Statement
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    Statement            go to state 174
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 169
+
+   55 CaseElement: CASE_KW M Constant . N TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    $default  reduce using rule 102 (N)
+
+    N  go to state 175
+
+
+state 170
+
+   56 CaseElement: CaseElement CASE_KW M . Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    BOOL_KW    shift, and go to state 40
+    NUMCONST   shift, and go to state 41
+    CHARCONST  shift, and go to state 42
+    REALCONST  shift, and go to state 43
+
+    Constant  go to state 176
+
+
+state 171
+
+   57 DefaultElement: DEFAULT_KW TWO_COLUMN . Statement SEMI_COLUMN_KW
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    Statement            go to state 177
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 172
+
+   52 SelectionStmt: SWITCH_KW LEFTPA SimpleExpression rightPaQ CaseElement DefaultElement END_KW .
+
+    $default  reduce using rule 52 (SelectionStmt)
+
+
+state 173
+
+   59 ItereationStmt: WHILE_KW LEFTPA M IfExpression rightPaQ Statement M .
+
+    $default  reduce using rule 59 (ItereationStmt)
+
+
+state 174
+
+   51 SelectionStmt: IF_KW LEFTPA IfExpression rightPaQ Statement ELSE_KW M Statement .
+
+    $default  reduce using rule 51 (SelectionStmt)
+
+
+state 175
+
+   55 CaseElement: CASE_KW M Constant N . TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    TWO_COLUMN  shift, and go to state 178
+
+
+state 176
+
+   56 CaseElement: CaseElement CASE_KW M Constant . N TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    $default  reduce using rule 102 (N)
+
+    N  go to state 179
+
+
+state 177
+
+   57 DefaultElement: DEFAULT_KW TWO_COLUMN Statement . SEMI_COLUMN_KW
+
+    SEMI_COLUMN_KW  shift, and go to state 180
+
+
+state 178
+
+   55 CaseElement: CASE_KW M Constant N TWO_COLUMN . M Statement SEMI_COLUMN_KW
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 181
+
+
+state 179
+
+   56 CaseElement: CaseElement CASE_KW M Constant N . TWO_COLUMN M Statement SEMI_COLUMN_KW
+
+    TWO_COLUMN  shift, and go to state 182
+
+
+state 180
+
+   57 DefaultElement: DEFAULT_KW TWO_COLUMN Statement SEMI_COLUMN_KW .
+
+    $default  reduce using rule 57 (DefaultElement)
+
+
+state 181
+
+   55 CaseElement: CASE_KW M Constant N TWO_COLUMN M . Statement SEMI_COLUMN_KW
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    Statement            go to state 183
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 182
+
+   56 CaseElement: CaseElement CASE_KW M Constant N TWO_COLUMN . M Statement SEMI_COLUMN_KW
+
+    $default  reduce using rule 101 (M)
+
+    M  go to state 184
+
+
+state 183
+
+   55 CaseElement: CASE_KW M Constant N TWO_COLUMN M Statement . SEMI_COLUMN_KW
+
+    SEMI_COLUMN_KW  shift, and go to state 185
+
+
+state 184
+
+   56 CaseElement: CaseElement CASE_KW M Constant N TWO_COLUMN M . Statement SEMI_COLUMN_KW
+
+    BOOL_KW         shift, and go to state 40
+    ID_KW           shift, and go to state 1
+    NUMCONST        shift, and go to state 41
+    CHARCONST       shift, and go to state 42
+    REALCONST       shift, and go to state 43
+    NOT_KW          shift, and go to state 44
+    IF_KW           shift, and go to state 88
+    SWITCH_KW       shift, and go to state 89
+    WHILE_KW        shift, and go to state 90
+    BREAK_KW        shift, and go to state 91
+    UNARY_OP_KW     shift, and go to state 45
+    RETURN_KW       shift, and go to state 92
+    SEMI_COLUMN_KW  shift, and go to state 93
+    LEFTAC          shift, and go to state 94
+    LEFTPA          shift, and go to state 46
+
+    Statement            go to state 186
+    CompoundStmt         go to state 96
+    ExpressionStmt       go to state 97
+    SelectionStmt        go to state 98
+    ItereationStmt       go to state 99
+    ReturnStmt           go to state 100
+    BreakStmt            go to state 101
+    Expression           go to state 102
+    SimpleExpression     go to state 72
+    RelExpression        go to state 48
+    MathLogicExpression  go to state 49
+    UnaryExpression      go to state 50
+    Factor               go to state 51
+    Mutable              go to state 73
+    Immutable            go to state 53
+    Call                 go to state 54
+    Constant             go to state 55
+    ID                   go to state 56
+
+
+state 185
+
+   55 CaseElement: CASE_KW M Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW .
+
+    $default  reduce using rule 55 (CaseElement)
+
+
+state 186
+
+   56 CaseElement: CaseElement CASE_KW M Constant N TWO_COLUMN M Statement . SEMI_COLUMN_KW
+
+    SEMI_COLUMN_KW  shift, and go to state 187
+
+
+state 187
+
+   56 CaseElement: CaseElement CASE_KW M Constant N TWO_COLUMN M Statement SEMI_COLUMN_KW .
+
+    $default  reduce using rule 56 (CaseElement)
